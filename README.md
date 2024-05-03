@@ -20,3 +20,15 @@ As developers, we hope to bring this project to life so our target audience and 
 
 ### Data Flow Diagram
 ### Summary Table For User Stories
+| Priority | User       | Description                                                   | Technical Implementation                                                                                           |
+|----------|------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| P0       | As a user  | I want to be able to create, log in to, and log out of user accounts. | When signing in, use sessions and Azure auth to handle accounts. Add them to the ‘Users’ database.                  |
+| P0       | As a user  | I want to be able to create a game lobby.                     | Use Express WebSockets and generate a room code that others must enter to join                                     |
+| P0       | As a user  | I want to be able to join an existing lobby.                  | Get a room code from the user and try to validate it. If a room with the code exists, add them to the room.         |
+| P0       | As a user  | I want to know how to play 1v1 Wordle                         | Build a webpage that explains 1v1 Wordle rules using HTML/CSS                                                      |
+| P0       | As a user  | I want to be able to play real-time wordle against my friend  | Use Express WebSockets to keep track of whether a user has successfully guessed the word or not. Wordle will be coded with HTML/CSS/JS. Send a POST request to the ‘Games’ database |
+| P1       | As a user  | I want to be able to add a user as a friend                   | When adding a user as a friend, use their ID from the ‘Users’ database and add to an array field in the ‘Users’ database using a POST request |
+| P1       | As a user  | I want to see my opponents progress on the word               | Use WebSockets to update a text area with how many letters a user has                                               |
+| P1       | As a user  | I want to be able to see my statistics                        | When looking for statistics, make a GET request to pull fields from the ‘Users’ database and display ELO, record, and games played |
+| P2       | As a user  | I want to be able to see my game history                      | When getting a users’ game history, make a GET request to the ‘Games’ database where the corresponding user ID is present |
+| P2       | As a user  | I want to be able to see a leaderboard                        | When viewing the leaderboard, a GET request will be sent to the ‘Users’ database will be pulled and sorted by ELO in descending order |
