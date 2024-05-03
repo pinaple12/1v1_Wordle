@@ -20,6 +20,7 @@ As developers, we hope to bring this project to life so our target audience and 
 ![info441_diagram](https://github.com/info441-sp24/final-project-isaxena02/assets/114948976/04732870-7c49-4417-9ff0-f7daf60ab685)
 
 ### Data Flow Diagram
+![info441 dataflow](https://github.com/info441-sp24/final-project-isaxena02/assets/81937831/2353101a-35a4-4c55-9c44-7f5865222b77)
 ### Summary Table For User Stories
 | Priority | User       | Description                                                   | Technical Implementation                                                                                           |
 |----------|------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
@@ -33,3 +34,35 @@ As developers, we hope to bring this project to life so our target audience and 
 | P1       | As a user  | I want to be able to see my statistics                        | When looking for statistics, make a GET request to pull fields from the ‘Users’ database and display ELO, record, and games played |
 | P2       | As a user  | I want to be able to see my game history                      | When getting a users’ game history, make a GET request to the ‘Games’ database where the corresponding user ID is present |
 | P2       | As a user  | I want to be able to see a leaderboard                        | When viewing the leaderboard, a GET request will be sent to the ‘Users’ database will be pulled and sorted by ELO in descending order |
+
+### API EndPoints
+GET /user/:id - Allows users to see their user profile, stats, and friends
+GET /user/login - Allows users to log into their account
+GET /game/:id - Allows users to see their game history
+GET/user/friends - Allow users to view the friends list
+POST /game - Uploads game to history
+POST /user - Uploads game to user stats
+POST/user/friend-request - Allow users to send a friend request
+POST /user/accept-request - Allow users to accept a friend request
+POST /user/register - Allows users to register for an account
+DELETE /user/reject-request - Allow users to delete a friend request
+WS /game/create - Allows users to create lobbies
+WS /game/join - Allows users to join existing lobbies
+
+### Database Schemas
+- Users:
+	* userID: Integer,
+	* Username: String,
+	* Elo: Integer,
+	* gamesPlayed: Array of integers,
+	* gamesWon: Integer,
+	* gamesLost: Integer,
+	* friends: Array of Integers,
+	* requests: Array of Integers
+
+- Games:
+	* gameID: Integer
+  * players: Array of integers,
+  * winner: Integer (userID),
+  * score: Array of integers
+
