@@ -37,16 +37,27 @@ As developers, we hope to bring this project to life so our target audience and 
 
 ### API EndPoints
 GET /user/:id - Allows users to see their user profile, stats, and friends
+
 GET /user/login - Allows users to log into their account
+
 GET /game/:id - Allows users to see their game history
+
 GET/user/friends - Allow users to view the friends list
+
 POST /game - Uploads game to history
+
 POST /user - Uploads game to user stats
+
 POST/user/friend-request - Allow users to send a friend request
+
 POST /user/accept-request - Allow users to accept a friend request
+
 POST /user/register - Allows users to register for an account
+
 DELETE /user/reject-request - Allow users to delete a friend request
+
 WS /game/create - Allows users to create lobbies
+
 WS /game/join - Allows users to join existing lobbies
 
 ### Database Schemas
