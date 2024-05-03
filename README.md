@@ -1,4 +1,5 @@
 # INFO 441 Final Project
+Group 2: Ishita Saxena, Erica Zhang, Justin Dong, Kai Tinder
 
 ## Project Description
 ### Who is our target audience?
