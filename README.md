@@ -16,5 +16,7 @@ As developers, we hope to bring this project to life so our target audience and 
 
 ## Technical Description
 ### Architectural Diagram
+![info441_diagram](https://github.com/info441-sp24/final-project-isaxena02/assets/114948976/04732870-7c49-4417-9ff0-f7daf60ab685)
+
 ### Data Flow Diagram
 ### Summary Table For User Stories
