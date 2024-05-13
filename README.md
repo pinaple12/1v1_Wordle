@@ -62,18 +62,17 @@ WS /game/join - Allows users to join existing lobbies
 
 ### Database Schemas
 - Users:
-	* userID: Integer,
-	* Username: String,
-	* Elo: Integer,
-	* gamesPlayed: Array of integers,
-	* gamesWon: Integer,
-	* gamesLost: Integer,
-	* friends: Array of Integers,
-	* requests: Array of Integers
+    * userID: Integer,
+    * Username: String,
+    * Elo: Integer,
+    * gamesPlayed: Array of integers,
+    * gamesWon: Integer,
+    * gamesLost: Integer,
+    * friends: Array of Integers,
+    * requests: Array of Integers
 
 - Games:
-	* gameID: Integer
+    * gameID: Integer
   * players: Array of integers,
   * winner: Integer (userID),
   * score: Array of integers
-
