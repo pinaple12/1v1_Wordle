@@ -9,22 +9,22 @@ await mongoose.connect("TODO");
 console.log("successfully connected to mongodb");
 
 const userSchema = new mongoose.Schema({
-    userID: Number,
+    //userID: Number,
     username: String,
     elo: Number,
     gamesPlayed: [Number],
     gamesWon: Number,
     gamesLost: Number,
-    friends: [Number],
-    requests: [Number]
+    friends: [String],
+    requests: [String]
 })
 
 models.User = mongoose.model('User', userSchema)
 
 const gameSchema = new mongoose.Schema({
     gameID: Number,
-    players: [Number], // should change to be usernames
-    winner: Number, // user id, should honestly change to be username
+    players: [String], // should change to be usernames
+    winner: String, // user id, should honestly change to be username
     score: [Number]
 })
 

@@ -29,6 +29,8 @@ const authConfig = {
 
 import models from './models.js';
 import usersRouter from './routes/users.js';
+import userRouter from './routes/user.js';
+
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -61,6 +63,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/users', usersRouter);
+app.use('/user', userRouter);
 
 app.get('/signin', (req, res, next) => {
     return req.authContext.login({
