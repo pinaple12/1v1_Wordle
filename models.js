@@ -12,19 +12,19 @@ const userSchema = new mongoose.Schema({
     //userID: Number,
     username: String,
     elo: Number,
-    gamesPlayed: [Number],
+    gamesPlayed: [Number], // might not need to be an array because we get games where the username is present instead
     gamesWon: Number,
     gamesLost: Number,
-    friends: [String],
-    requests: [String]
+    friends: [String], // changed from id to username
+    requests: [String] // changed from id to username
 })
 
 models.User = mongoose.model('User', userSchema)
 
 const gameSchema = new mongoose.Schema({
-    gameID: Number,
-    players: [String], // should change to be usernames
-    winner: String, // user id, should honestly change to be username
+    gameID: Number, // maybe unnecessary
+    players: [String], // changed from id to username
+    winner: String, // changed from id to username
     score: [Number]
 })
 
