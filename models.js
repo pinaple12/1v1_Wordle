@@ -4,7 +4,7 @@ let models = {};
 
 console.log("connecting to mongodb");
 
-await mongoose.connect("TODO");
+await mongoose.connect("mongodb://localhost:27017");
 
 console.log("successfully connected to mongodb");
 
