@@ -4,7 +4,7 @@ let models = {};
 
 console.log("connecting to mongodb");
 
-await mongoose.connect("mongodb://localhost:27017");
+await mongoose.connect("mongodb+srv://ericazqy:d6hDrcVVP5tCCNYN@cluster0.qc2c1bb.mongodb.net/wordle");
 
 console.log("successfully connected to mongodb");
 
