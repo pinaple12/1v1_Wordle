@@ -1,5 +1,5 @@
 import express from 'express';
-import expressWs from 'express-ws'; 
+import enableWs from 'express-ws'; 
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -31,6 +31,7 @@ import sessions from 'express-session';
 import models from './models.js';
 import usersRouter from './routes/users.js';
 import userRouter from './routes/user.js';
+import gameRouter from './routes/game.js';
 
 
 import { fileURLToPath } from 'url';
@@ -40,13 +41,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 var app = express();
-expressWs(app); 
+enableWs(app); 
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public/build')));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // const oneDay = 1000 * 60 * 60 * 24
 // app.use(sessions({
@@ -62,6 +63,7 @@ app.use(express.static(path.join(__dirname, 'public/build')));
 
 app.use('/users', usersRouter);
 app.use('/user', userRouter);
+app.use('/games', gameRouter);
 
 // app.get('/signin', (req, res, next) => {
 //     return req.authContext.login({
@@ -78,9 +80,16 @@ app.use('/user', userRouter);
 
 // app.use(authProvider.interactionErrorHandler());
 
-let socketCounter = 1;
-let allSockets = {};
+export default app;
 
+
+
+
+
+
+
+
+/** 
 app.ws('/gameSocket', (ws, req) => {
     let mySocketNum = socketCounter;
     socketCounter++;
@@ -113,12 +122,4 @@ app.ws('/gameSocket', (ws, req) => {
         console.log(`user ${mySocketNum} disconnected`);
     });
 });
-
-const generateRoomCode = () => {
-    return Math.random().toString(36).substring(2, 7).toUpperCase();
-};
-
-const words = ['APPLE', 'BANANA', 'CHERRY', 'DATES', 'ELDER'];
-const getRandomWord = () => words[Math.floor(Math.random() * words.length)];
-
-export default app;
+*/

@@ -2,6 +2,8 @@ import express from 'express';
 
 var router = express.Router();
 
+const games = {};
+
 router.get('/myIdentity', (req, res) => { // TODO: need to handle on the frontend
     if (req.session.isAuthenticated) {
         res.json(
