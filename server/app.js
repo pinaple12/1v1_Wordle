@@ -5,26 +5,27 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import sessions from 'express-session';
 
-//import WebAppAuthProvider from 'msal-node-wrapper'
+import WebAppAuthProvider from 'msal-node-wrapper'
 
-// const authConfig = {
-// 	auth: {
-// 		clientId: "",
-//         authority: "",
-//         clientSecret: "",
-//         redirectUri: ""
-// 	},
+const authConfig = {
+ auth: {
+     clientId: "5c0eea2a-41fe-49e9-9980-11040673bf84",
+        authority: "https://login.microsoftonline.com/f6b6dd5b-f02f-441a-99a0-162ac5060bd2",
+        clientSecret: "RM98Q~Cl8pAF9ZoSlRVIKB4ZUwNkus0l4xuk~aVd",
+        redirectUri: "/redirect"
+ },
 
-// 	system: {
-//     	loggerOptions: {
-//         	loggerCallback(loglevel, message, containsPii) {
-//             	console.log(message);
-//         	},
-//         	piiLoggingEnabled: false,
-//         	logLevel: 3,
-//     	}
-// 	}
-// };
+
+	system: {
+    	loggerOptions: {
+        	loggerCallback(loglevel, message, containsPii) {
+            	console.log(message);
+        	},
+        	piiLoggingEnabled: false,
+        	logLevel: 3,
+    	}
+	}
+};
 
 
 
@@ -49,36 +50,36 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// const oneDay = 1000 * 60 * 60 * 24
-// app.use(sessions({
-//     secret: "this is some secret key I am making up p8kn fwlihftrn3oinyswnwd3in4oin",
-//     saveUninitialized: true,
-//     cookie: {maxAge: oneDay},
-//     resave: false
-// }))
+const oneDay = 1000 * 60 * 60 * 24
+app.use(sessions({
+    secret: "this is some secret key I am making up p8kn fwlihftrn3oinyswnwd3in4oin",
+    saveUninitialized: true,
+    cookie: {maxAge: oneDay},
+    resave: false
+}))
 
-// const authProvider = await WebAppAuthProvider.WebAppAuthProvider.initialize(authConfig);
-// app.use(authProvider.authenticate());
+const authProvider = await WebAppAuthProvider.WebAppAuthProvider.initialize(authConfig);
+app.use(authProvider.authenticate());
 
 
 app.use('/users', usersRouter);
 app.use('/user', userRouter);
 app.use('/games', gameRouter);
 
-// app.get('/signin', (req, res, next) => {
-//     return req.authContext.login({
-//         postLoginRedirectUri: "/", // redirect here after login
-//     })(req, res, next);
+app.get('/signin', (req, res, next) => {
+    return req.authContext.login({
+        postLoginRedirectUri: "http://localhost:3000/", // redirect here after login
+    })(req, res, next);
 
-// });
-// app.get('/signout', (req, res, next) => {
-//     return req.authContext.logout({
-//         postLogoutRedirectUri: "/", // redirect here after logout
-//     })(req, res, next);
+});
+app.get('/signout', (req, res, next) => {
+    return req.authContext.logout({
+        postLogoutRedirectUri: "http://localhost:3000/", // redirect here after logout
+    })(req, res, next);
 
-// });
+});
 
-// app.use(authProvider.interactionErrorHandler());
+app.use(authProvider.interactionErrorHandler());
 
 export default app;
 

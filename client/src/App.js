@@ -7,53 +7,44 @@ import CreateLobby from './pages/CreateLobby';
 import JoinLobby from './pages/JoinLobby';
 import GamePage from './pages/GamePage';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 
 function App() {
   const [user, setUser] = useState(null);
-  // placeholder data for now: 
-  const user_data = {
-    "userID": 1,
-    "username": "testuser",
-    "elo": 1200,
-    "gamesPlayed": [1, 2, 3],
-    "gamesWon": 2,
-    "gamesLost": 1,
-    "friends": [
-      {
-        "userID": 2,
-        "username": "friend1"
-      },
-      {
-        "userID": 3,
-        "username": "friend2"
-      }
-    ],
-    "requests": []
-  }
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const response = await fetch('/api/user/myIdentity');
-  //       const data = await response.json();
-  //       setUser(data.userInfo);
-  //     } catch (error) {
-  //       console.error('Error fetching user data:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch('/user/myIdentity');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.status === 'loggedin') {
+                    setUser(data.userInfo);
+                } else {
+                    setUser(null);
+                }
+            } else {
+                setUser(null);
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            setUser(null);
+        }
+    };
 
-  //   fetchUserData();
-  // }, [user?.userID]);
+      fetchUserData();
+  }, []);
 
   return (
     <Router>
-      <Navbar user={user_data} />
+      <Navbar user={user} />
       <Routes>
-        <Route path="/" element={<HomePage user={user_data}/>} />
+        <Route path="/" element={<HomePage user={user}/>} />
         <Route path="/learn" element={<LearnHowToPlay />} />
-        <Route path="/create-lobby" element={<CreateLobby user={user_data}/>} />
-        <Route path="/join-lobby" element={<JoinLobby user={user_data}/>} />
-        <Route path="/game" element={<GamePage user={user_data}/>} />
+        <Route path="/create-lobby" element={<CreateLobby user={user}/>} />
+        <Route path="/join-lobby" element={<JoinLobby user={user}/>} />
+        <Route path="/game" element={<GamePage user={user}/>} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );
