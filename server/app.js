@@ -80,21 +80,6 @@ app.use('/games', gameRouter);
 
 // app.use(authProvider.interactionErrorHandler());
 
-let socketCounter = 0;
-let allSockets = {};
-const games = {};
-
-//handler function for new game creation
-//passed to game.js
-export const newGame = (gameCode, game) => {
-    if (games.gameCode) {
-        res.status(400).send({status: 'error', error : 'existing game never deleted'});
-        return;
-    }
-    games[gameCode] = game;
-    
-}
-
 export default app;
 
 

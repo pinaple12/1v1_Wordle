@@ -5,8 +5,9 @@ const CreateLobby = ({ user }) => {
   const [roomCode, setRoomCode] = useState('');
   const [word, setWord] = useState('');
   const [guest, setGuest] = useState(null); 
-  const socket = useSocket('ws://localhost:3000/gameSocket'); 
+  const socketURL = 'ws://localhost:3001/gameSocket'; 
 
+  /** 
   useEffect(() => {
     if (socket) {
       socket.onmessage = (event) => {
@@ -19,13 +20,39 @@ const CreateLobby = ({ user }) => {
         }
       };
     }
-  }, [socket]);
+  }, [socket]); */
 
-  const handleCreateLobby = () => {
-    if (socket) {
-      socket.send(JSON.stringify({ action: 'createLobby' }));
+  const handleCreateLobby = async () => {
+    const lobbyResponse = await fetch('/games/createLobby', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({playerName: 'staticUser'})
+    })
+
+    if (lobbyResponse.status !== 200) {
+      return('fatal error');
     }
+
+    const lobbyData = await lobbyResponse.json();
+
+    setWord(lobbyData.word);
+    setRoomCode(lobbyData.gameCode);
+
+    handleCreateWS(lobbyData.gameCode)
   };
+
+  //creates new websocket connection after game is created.
+  const handleCreateWS = async (gameCode) => {
+    console.log('done')
+    const gameSocket = new WebSocket(socketURL);
+
+    gameSocket.addEventListener('open', () => {
+      gameSocket.send(JSON.stringify({action: 'create', gameCode}))
+    })
+
+  }
 
   return (
     <div className="create-lobby-page">
