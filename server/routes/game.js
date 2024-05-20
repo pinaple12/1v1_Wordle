@@ -1,5 +1,4 @@
 import express from 'express';
-import { newGame } from '../app.js';
 
 var router = express.Router();
 
@@ -56,29 +55,6 @@ router.post('/createLobby', async (req, res) => {
 
     res.status(200).send({status: 'success', gameCode, word});
 });
-
-router.ws('/gameSocket', (ws, res) => {
-    console.log('connected new user');
-    allSockets.gameCode = [ws];
-
-    ws.on('message', async(msg) => {
-        const socketMessage = JSON.parse(msg);
-        const gameCode = socketMessage.gameCode;
-
-        //on create, add socket with new gamecode
-        if (socketMessage.action === 'create') {
-            allSockets[gameCode] = [ws];
-        } 
-
-        //on join, add socket to existing gamecode
-        if (socketMessage.action === 'join') {
-            allSockets[gameCode].push(ws);
-        }
-    });
-
-    console.log(allSockets);
-
-})
 
 //Generates a room code
 const generateRoomCode = () => {
