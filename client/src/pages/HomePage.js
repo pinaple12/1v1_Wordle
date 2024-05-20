@@ -7,10 +7,14 @@ const HomePage = ({ user }) => (
     <p>Welcome to Wordle 1v1, the competitive word game where you can challenge your friends and test your word-guessing skills. Ready to start a game? Choose an option below!</p>
     {user ? (
       <>
-        <Link to="/create-lobby">Create Lobby</Link>
-        <Link to="/join-lobby">Join Lobby</Link>
-        <Link to="/profile">Profile</Link>
-        <Link to="/game">game</Link>
+        <Link to="/create-lobby">Create Lobby (Work in Progress)</Link>
+        <br />
+        <Link to="/join-lobby">Join Lobby (Work in Progress)</Link>
+        <br />
+        <Link to="/profile">Profile (Work in Progress)</Link>
+        <br />
+        <Link to="/game">game (Try this!)</Link>
+        <br />
       </>
     ) : (
       <Link to="/login">Login</Link>

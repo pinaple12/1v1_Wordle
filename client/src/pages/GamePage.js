@@ -6,36 +6,55 @@ import GameEndPopup from '../components/GameEndPopup';
 import useSocket from '../hooks/useSocket';
 
 const Game = ({ user }) => {
-    const [guesses, setGuesses] = useState([]);
-    const [currentGuess, setCurrentGuess] = useState('');
-    const [feedback, setFeedback] = useState([]);
-    const [gameOver, setGameOver] = useState(false);
-    const [result, setResult] = useState('');
-    const [points, setPoints] = useState(0);
-    const [word, setWord] = useState(''); 
-    const [opponent, setOpponent] = useState(null);
-    const [opponentGuesses, setOpponentGuesses] = useState([]);
-    const socket = useSocket('ws://localhost:5000/gameSocket');
-  
-    useEffect(() => {
-      if (socket) { // not sure if this is how web socket works
-        socket.onmessage = (event) => {
-          const data = JSON.parse(event.data);
-          if (data.action === 'gameData') {
-            setWord(data.word);
-            setOpponent(data.opponent); 
-          } else if (data.action === 'gameOver') {
-            setGameOver(true);
-            setResult(data.result);
-            setPoints(data.points);
-          } else if (data.action === 'opponentMadeGuess') {
-            setOpponentGuesses((prevGuesses) => [...prevGuesses, data.guess]);
-          }
-        };
-  
-        socket.send(JSON.stringify({ action: 'getGameData', username: user.username }));
+  const [guesses, setGuesses] = useState([]);
+  const [currentGuess, setCurrentGuess] = useState('');
+  const [feedback, setFeedback] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
+  const [result, setResult] = useState('');
+  const [points, setPoints] = useState(0);
+  const [word, setWord] = useState('APPLE');
+  const [opponent, setOpponent] = useState(null);
+  const [opponentGuesses, setOpponentGuesses] = useState([]);
+  const socket = useSocket('ws://localhost:5000/gameSocket');
+
+  useEffect(() => {
+    if (socket) { // not sure if this is how web socket works
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.action === 'gameData') {
+          setWord(data.word);
+          setOpponent(data.opponent);
+        } else if (data.action === 'gameOver') {
+          setGameOver(true);
+          setResult(data.result);
+          setPoints(data.points);
+        } else if (data.action === 'opponentMadeGuess') {
+          setOpponentGuesses((prevGuesses) => [...prevGuesses, data.guess]);
+        }
+      };
+
+      socket.send(JSON.stringify({ action: 'getGameData', username: user.username }));
+    }
+  }, [socket, user.username]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      const key = event.key.toUpperCase();
+      if (/^[A-Z]$/.test(key) && currentGuess.length < 5) {
+        setCurrentGuess(currentGuess + key);
+      } else if (key === 'ENTER') {
+        handleKeyPress('ENTER');
+      } else if (key === 'BACKSPACE') {
+        handleKeyPress('BACKSPACE');
       }
-    }, [socket, user.username]);
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentGuess, gameOver]);
 
   const handleKeyPress = (key) => {
     if (gameOver) return;
@@ -72,6 +91,7 @@ const Game = ({ user }) => {
     const feedback = Array(5).fill('gray');
 
     for (let i = 0; i < 5; i++) {
+      console.log(guess[i], word[i]);
       if (guess[i] === word[i]) {
         feedback[i] = 'green';
       } else if (word.includes(guess[i])) {
@@ -97,19 +117,13 @@ const Game = ({ user }) => {
   return (
     <div className="game-page">
       <h1>Wordle 1v1</h1>
-      <div className="player-info">
-        <div className="player">
-          <OpponentProgress
-            username={user.username}
-            guessesLeft={6 - guesses.length}
-          />
-        </div>
-        <div className="player">
-          <OpponentProgress
-            username={opponent.username}
-            guessesLeft={opponent.guessesLeft}
-          />
-        </div>
+      <div className="current-guess">
+        {currentGuess.split('').map((letter, index) => (
+          <span key={index} className="current-letter">{letter}</span>
+        ))}
+        {Array(5 - currentGuess.length).fill('').map((_, index) => (
+          <span key={index} className="empty-letter">_</span>
+        ))}
       </div>
       <GameGrid guesses={guesses} feedback={feedback} />
       <Keyboard onKeyPress={handleKeyPress} />
