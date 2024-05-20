@@ -8,8 +8,11 @@ const HomePage = ({ user }) => (
     {user ? (
       <>
         <Link to="/create-lobby">Create Lobby</Link>
+        <br />
         <Link to="/join-lobby">Join Lobby</Link>
+        <br />
         <Link to="/profile">Profile</Link>
+        <br />
         <Link to="/game">game</Link>
       </>
     ) : (

@@ -14,11 +14,11 @@ code {
 
 .letter {
   display: inline-block;
-  width: 40px; /* or any size that fits your design */
-  height: 40px; /* or any size that fits your design */
-  line-height: 40px; /* this should match the height for vertical alignment */
+  width: 40px; 
+  height: 40px; 
+  line-height: 40px; 
   text-align: center;
-  border: 1px solid #ddd; /* light grey border for all letters */
+  border: 1px solid #ddd;
   margin: 2px;
   font-size: 20px;
   font-weight: bold;
@@ -26,16 +26,16 @@ code {
 }
 
 .letter.gray {
-  background-color: #d8d8d8; /* light gray for unguessed letters */
-  color: #fff; /* white text */
+  background-color: #d8d8d8;
+  color: #fff; 
 }
 
 .letter.green {
-  background-color: #6aaa64; /* green for correct letters */
-  color: #fff; /* white text */
+  background-color: #6aaa64;
+  color: #fff;
 }
 
 .letter.yellow {
-  background-color: #c9b458; /* yellow for misplaced letters */
-  color: #fff; /* white text */
+  background-color: #c9b458; 
+  color: #fff;
 }
