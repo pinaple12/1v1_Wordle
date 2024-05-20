@@ -4,6 +4,7 @@ import { newGame } from '../app.js';
 var router = express.Router();
 
 //Global Variables
+const games = {};
 const codesInUse = new Set();
 const words = ['APPLE', 'BANAN', 'CHERRY', 'DATES', 'ELDER'];
 
@@ -45,8 +46,13 @@ router.post('/createLobby', async (req, res) => {
         gameCode = generateRoomCode();
     }
 
+    if (games.gameCode) {
+        res.status(400).send({status: 'error', error : 'existing game never deleted'});
+        return;
+    }
+
     const game = {creator, word};
-    newGame(gameCode, game);
+    games[gameCode] = game;
 
     res.status(200).send({status: 'success', gameCode, word});
 });
