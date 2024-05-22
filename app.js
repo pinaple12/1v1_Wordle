@@ -32,11 +32,12 @@ const authConfig = {
 import models from './models.js';
 import usersRouter from './routes/users.js';
 import userRouter from './routes/user.js';
-import gameRouter from './routes/game.js';
+import gameRouter, { mountWs } from './routes/game.js';
 
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { setDefaultHighWaterMark } from 'stream';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -65,6 +66,7 @@ app.use(authProvider.authenticate());
 app.use('/users', usersRouter);
 app.use('/user', userRouter);
 app.use('/games', gameRouter);
+mountWs(app);
 
 app.get('/signin', (req, res, next) => {
     return req.authContext.login({
@@ -78,6 +80,7 @@ app.get('/signout', (req, res, next) => {
     })(req, res, next);
 
 });
+
 
 app.use(authProvider.interactionErrorHandler());
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const HomePage = ({ user }) => (
   <div className="home-page">
-    <h1>Welcome to Wordle 1v1</h1>
+    <h1>Welcome to Wordle 1v1 test</h1>
     <p>Welcome to Wordle 1v1, the competitive word game where you can challenge your friends and test your word-guessing skills. Ready to start a game? Choose an option below!</p>
     {user ? (
       <>

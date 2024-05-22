@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     const username = req.query.username;
 
     try {
-        const games = await req.models.Game.find({ players: username});
+        const games = await req.models.Game.find({ players: username });
 
         res.json(games);
     } catch (error) {
@@ -44,17 +44,48 @@ router.post('/createLobby', async (req, res) => {
     while (codesInUse.has(gameCode)) {
         gameCode = generateRoomCode();
     }
+    codesInUse.add(gameCode);
 
     if (games.gameCode) {
-        res.status(400).send({status: 'error', error : 'existing game never deleted'});
+        res.status(400).send({ status: 'error', error: 'existing game never deleted' });
         return;
     }
 
-    const game = {creator, word};
+    const game = { creator, word };
     games[gameCode] = game;
 
-    res.status(200).send({status: 'success', gameCode, word});
+    res.status(200).send({ status: 'success', gameCode, word });
 });
+
+export const mountWs = (app) => {
+    app.ws('/gameSockets', (ws, res) => {
+        console.log('connected new user');
+
+        ws.on('message', (msg) => {
+            const socketMessage = JSON.parse(msg);
+            const gameCode = socketMessage.gameCode;
+
+            //on create, add socket with new gamecode
+            if (socketMessage.action === 'create') {
+                console.log(gameCode);
+                allSockets[gameCode] = [ws];
+            }
+
+            //on join, add socket to existing gamecode
+            if (socketMessage.action === 'join') {
+                games[gameCode].guest = socketMessage.username;
+
+                allSockets[gameCode].forEach(socket => {
+                    socket.send({ 'status': 'joined' })
+                });
+                //allSockets[gameCode].push(ws);
+            }
+        });
+
+        console.log(allSockets);
+
+    })
+}
 
 //Generates a room code
 const generateRoomCode = () => {
