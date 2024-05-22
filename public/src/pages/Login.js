@@ -49,7 +49,7 @@ const Login = () => {
     <div className="login-page">
     <h1>Login</h1>
     <div className="azure-auth-interface">
-    <a href="http://localhost:3001/signin" >Log in</a>`
+    <a href="http://localhost:3000/signin" >Log in</a>`
     </div>
   </div>
   )
