@@ -5,6 +5,7 @@
  */
 var debug = require('debug')('express-starter:server');
 var http = require('http');
+var enableWs = require('express-ws');
 
 (async () => {
   const app = await (await import('../app.js')).default;
@@ -22,11 +23,13 @@ var http = require('http');
 
   var server = http.createServer(app);
 
+  enableWs(app,server)
+
   /**
    * Listen on provided port, on all network interfaces.
    */
 
-  server.listen(3000);
+  server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
 

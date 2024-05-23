@@ -6,6 +6,7 @@ var router = express.Router();
 const games = {};
 const codesInUse = new Set();
 const words = ['APPLE', 'BANAN', 'CHERRY', 'DATES', 'ELDER'];
+let allSockets = {};
 
 router.get('/', async (req, res) => {
     const username = req.query.username;
@@ -67,8 +68,9 @@ export const mountWs = (app) => {
 
             //on create, add socket with new gamecode
             if (socketMessage.action === 'create') {
-                console.log(gameCode);
+                console.log("game code" , gameCode);
                 allSockets[gameCode] = [ws];
+                console.log("all sockets",allSockets);
             }
 
             //on join, add socket to existing gamecode
@@ -82,7 +84,7 @@ export const mountWs = (app) => {
             }
         });
 
-        console.log(allSockets);
+        console.log("all sockets",allSockets);
 
     })
 }

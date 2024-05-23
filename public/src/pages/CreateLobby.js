@@ -44,6 +44,7 @@ const CreateLobby = ({ user }) => {
     console.log('got here');
 
     const webSocket = new WebSocket("ws://localhost:3000/gameSockets");
+    console.log('webSocket', webSocket);
 
     webSocket.addEventListener('open', (_event) => {
       webSocket.send(JSON.stringify({ action: 'create', gameCode}));
