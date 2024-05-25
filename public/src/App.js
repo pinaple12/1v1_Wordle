@@ -6,8 +6,8 @@ import LearnHowToPlay from './pages/LearnHowToPlay';
 import CreateLobby from './pages/CreateLobby';
 import JoinLobby from './pages/JoinLobby';
 import GamePage from './pages/GamePage';
-import Login from './pages/Login';
 import Profile from './pages/Profile';
+import Footer from './components/Footer';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -35,18 +35,21 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Navbar user={user} />
-      <Routes>
-        <Route path="/" element={<HomePage user={user}/>} />
-        <Route path="/learn" element={<LearnHowToPlay />} />
-        <Route path="/create-lobby" element={<CreateLobby user={user}/>} />
-        <Route path="/join-lobby" element={<JoinLobby user={user}/>} />
-        <Route path="/game" element={<GamePage user={user}/>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-    </Router>
+    <div className="app-container">
+      <Router>
+        <Navbar user={user} />
+        <Routes>
+          <Route path="/" element={<HomePage user={user}/>} />
+          <Route path="/learn" element={<LearnHowToPlay />} />
+          <Route path="/create-lobby" element={<CreateLobby user={user}/>} />
+          <Route path="/join-lobby" element={<JoinLobby user={user}/>} />
+          <Route path="/game" element={<GamePage user={user}/>} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes> 
+      </Router>
+      <Footer/>
+    </div>
+    
   );
 }
 

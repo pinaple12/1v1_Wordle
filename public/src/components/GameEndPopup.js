@@ -2,11 +2,23 @@ import React from 'react';
 
 const GameEndPopup = ({ result, word, points, onRestart }) => {
   return (
-    <div className="game-end-popup">
-      <h2>{result === 'win' ? 'Congratulations, You Win!' : 'Game Over, You Lose!'}</h2>
-      <p>The word was: {word}</p>
-      <p>Points: {points}</p>
-      <button onClick={onRestart}>Play Again</button>
+    <div className="popup-overlay">
+      <div className="popup-content">
+        <button className="close-button" onRestart={onRestart}>
+          X
+        </button>
+        <h2>GAME OVER</h2>
+        <p className={result === 'win' ? 'result win' : 'result lose'}>
+          {result === 'win' ? 'YOU WON!' : 'YOU LOST!'}
+        </p>
+        <p>
+          THE CORRECT WORD WAS: <span className="word">{word}</span>
+        </p>
+        <p>
+          THE POINTS YOU GOT: <span className="points">{points}</span>
+        </p>
+        <button className="rematch-button" onClick={onRestart}>Rematch</button>
+      </div>
     </div>
   );
 };

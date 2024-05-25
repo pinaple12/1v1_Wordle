@@ -5,21 +5,33 @@ const Keyboard = ({ onKeyPress }) => {
 
   return (
     <div className="keyboard">
-      {keys.map((key) => (
-        <button
-          key={key}
-          onClick={() => onKeyPress(key)}
-          className="key"
-        >
-          {key}
+      <div className="row">
+        {keys.slice(0, 10).map((key) => (
+          <button key={key} onClick={() => onKeyPress(key)} className="key">
+            {key}
+          </button>
+        ))}
+      </div>
+      <div className="row">
+        {keys.slice(10, 19).map((key) => (
+          <button key={key} onClick={() => onKeyPress(key)} className="key">
+            {key}
+          </button>
+        ))}
+      </div>
+      <div className="row">
+        <button onClick={() => onKeyPress('ENTER')} className="key special-key">
+          ENTER
         </button>
-      ))}
-      <button onClick={() => onKeyPress('ENTER')} className="key special-key">
-        ENTER
-      </button>
-      <button onClick={() => onKeyPress('BACKSPACE')} className="key special-key">
-        BACKSPACE
-      </button>
+        {keys.slice(19).map((key) => (
+          <button key={key} onClick={() => onKeyPress(key)} className="key">
+            {key}
+          </button>
+        ))}
+        <button onClick={() => onKeyPress('BACKSPACE')} className="key special-key">
+          BACKSPACE
+        </button>
+      </div>
     </div>
   );
 };
