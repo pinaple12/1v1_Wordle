@@ -62,6 +62,10 @@ app.use(sessions({
 const authProvider = await WebAppAuthProvider.WebAppAuthProvider.initialize(authConfig);
 app.use(authProvider.authenticate());
 
+app.use((req, res, next) => {
+    req.models = models
+    next()
+});
 
 app.use('/users', usersRouter);
 app.use('/user', userRouter);

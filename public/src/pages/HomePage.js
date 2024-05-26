@@ -11,7 +11,7 @@ const HomePage = ({ user }) => (
         <br />
         <Link to="/join-lobby">Join Lobby (Work in Progress)</Link>
         <br />
-        <Link to="/profile">Profile (Work in Progress)</Link>
+        <Link to={`/user/${encodeURIComponent(user.username)}`}>Profile (Work in Progress)</Link>
         <br />
         <Link to="/game">game (Try this!)</Link>
         <br />

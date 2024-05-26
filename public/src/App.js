@@ -44,7 +44,7 @@ function App() {
         <Route path="/join-lobby" element={<JoinLobby user={user}/>} />
         <Route path="/game" element={<GamePage user={user}/>} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/user/:username" element={<Profile />} />
       </Routes>
     </Router>
   );

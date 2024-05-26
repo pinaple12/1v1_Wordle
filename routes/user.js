@@ -20,15 +20,21 @@ router.get('/myIdentity', (req, res) => { // TODO: need to handle on the fronten
     }
 })
 
-router.get('/', async (req, res) => { // probably don't need a friends endpoint if we have this and display on the same page
+router.get('/:username', async (req, res) => {
     try {
-        let username = req.query.username;
-        res.json(await req.models.User.findOne({ username: username }))
+        let username = req.params.username;
+        const user = await req.models.User.findOne({ username: username });
+        if (!user) {
+            res.status(404).json({ "status": "error", "message": "User not found" });
+        } else {
+            res.json(user);
+        }
     } catch (error) {
-        console.error("Error fetching user data:", error)
-        res.status(500).json({ "status": "error", "error": error.message })
+        console.error("Error fetching user data:", error);
+        res.status(500).json({ "status": "error", "error": error.message });
     }
-})
+});
+
 
 router.post('/', async (req, res) => {
     try {
