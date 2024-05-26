@@ -122,7 +122,7 @@ const Game = ({ user }) => {
           <div key={rowIndex} className="guess-row">
             {Array.from({ length: 5 }).map((_, letterIndex) => {
               const letter = guesses[rowIndex] ? guesses[rowIndex][letterIndex] : (rowIndex === guesses.length ? currentGuess[letterIndex] : '');
-              const feedbackClass = feedback[rowIndex] ? feedback[rowIndex][letterIndex] : (rowIndex === guesses.length ? 'empty' : 'empty');
+              const feedbackClass = feedback[rowIndex] ? feedback[rowIndex][letterIndex] : (rowIndex === guesses.length ? '' : '');
               return (
                 <div key={letterIndex} className={`letter ${feedbackClass}`}>
                   {letter}

@@ -47,7 +47,7 @@ const HomePage = ({ user }) => (
             <div className="login-container">
               <img src={logo} alt="Wordle 1v1 Logo" className="logo" />
               <div >
-                <a href="http://localhost:3000/signin" >Log in</a>
+                <button className='login-button'><a href="http://localhost:3000/signin" >Log in</a></button>
               </div>
             </div>
           </div>

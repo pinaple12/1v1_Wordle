@@ -32,6 +32,8 @@ body {
 .profile-container {
   display: flex;
   align-items: center;
+  color: black;
+  text-decoration: none;
 }
 
 .top-row {
@@ -105,26 +107,23 @@ body {
   margin-bottom: 20px;
 }
 
-.login-container h1 {
-  margin: 0;
-  font-size: 24px;
-  color: #333;
-}
-
 .login-container .login-button {
-  background-color: #4caf50;
+  background-color: #67A561;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 16px;
-  cursor: pointer;
   margin-top: 20px;
+  text-decoration: none;
 }
 
-.login-container .login-button:hover {
-  background-color: #45a049;
+.login-button a {
+  text-decoration: none;
+  color: white;
 }
+
+
 
 /* Game page styles */
 .game-page {
@@ -171,36 +170,7 @@ body {
 }
 
 .letter.gray {
-  background-color: #787c7e;
-}
-
-.current-guess-grid {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.current-letter {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid #dcdcdc;
-  border-radius: 5px;
-  font-size: 1.5em;
-  text-transform: uppercase;
-  margin: 0 2px;
-  box-sizing: border-box;
-}
-
-.current-letter.filled {
-  background-color: #e0e0e0;
-}
-
-.current-letter.empty {
-  background-color: white;
-  border-color: #dcdcdc;
+  background-color: #808080;
 }
 
 /* Keyboard styles */
