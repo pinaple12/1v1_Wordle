@@ -54,7 +54,6 @@ const Profile = ({ user }) => {
       const data = await response.json();
       console.log(data);
       alert(data.message);
-      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -96,6 +95,7 @@ const Profile = ({ user }) => {
       const data = await response.json();
       console.log(data);
       alert(data.message);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }

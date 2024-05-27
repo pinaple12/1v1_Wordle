@@ -111,13 +111,17 @@ router.post('/accept-request', async (req, res) => {
         const index = user.requests.indexOf(requesterUsername);
 
         user.requests.splice(index, 1);
-        user.friends.push(requesterUsername);
+        if (!user.friends.includes(requesterUsername)) {
+            user.friends.push(requesterUsername);
+        }
 
         const requester = await req.models.User.findOne({ username: requesterUsername });
-        requester.friends.push(username);
+
+        if (!requester.friends.includes(username)) {
+            requester.friends.push(username);
+        }
 
         await requester.save();
-
         await user.save();
         res.json({ "status": "success", message: "Friend request accepted."});
     } catch (error) {
