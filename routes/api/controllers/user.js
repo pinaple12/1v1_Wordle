@@ -77,7 +77,6 @@ router.post('/friend-request', async (req, res) => {
     const receiverUsername = req.body.receiverUsername;
 
     try {
-        // NOTE: make sure they cannot send a friend request to themself
         const receiver = await req.models.User.findOne({ username: receiverUsername });
 
         if (senderUsername === receiverUsername) {
@@ -87,16 +86,16 @@ router.post('/friend-request', async (req, res) => {
         // check if there is already a pending or accepted request
         const existingRequest = receiver.requests.find(request => request === senderUsername);
         if (existingRequest) {
-            return res.status(500).json({ message: "Friend request already sent or already friends." });
+            return res.status(500).json({ message: "Friend request already sent." });
         }
 
         receiver.requests.push(senderUsername);
         await receiver.save();
 
-        res.json({ "status": "success" });
+        res.json({ "status": "success", message: "Friend request sent."});
     } catch (error) {
         console.error("Error sending friend request:", error)
-        res.status(500).json({ "status": "error", "error": error.message })
+        res.status(500).json({ "status": "error", "error": error.message, message: "Failed to send friend request."})
     }
 
 
@@ -120,7 +119,7 @@ router.post('/accept-request', async (req, res) => {
         await requester.save();
 
         await user.save();
-        res.json({ "status": "success" });
+        res.json({ "status": "success", message: "Friend request accepted."});
     } catch (error) {
         console.error("Error accepting friend request:", error)
         res.status(500).json({ "status": "error", "error": error.message })
@@ -139,7 +138,7 @@ router.delete('/reject-request', async (req, res) => {
         user.requests.splice(index, 1);
         await user.save();
 
-        res.json({ "status": "success" });
+        res.json({ "status": "success", message: "Friend request rejected." });
     } catch (error) {
         console.error("Error rejecting friend request:", error)
         res.status(500).json({ "status": "error", "error": error.message })

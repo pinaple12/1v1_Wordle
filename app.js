@@ -30,10 +30,8 @@ const authConfig = {
 
 
 import models from './models.js';
-import usersRouter from './routes/users.js';
-import userRouter from './routes/user.js';
-import gameRouter, { mountWs } from './routes/game.js';
-
+import apiRouter from './routes/api/api.js';
+import { mountWs } from './routes/api/controllers/game.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -67,9 +65,7 @@ app.use((req, res, next) => {
     next()
 });
 
-app.use('/users', usersRouter);
-app.use('/user', userRouter);
-app.use('/games', gameRouter);
+app.use('/api', apiRouter);
 mountWs(app);
 
 app.get('/signin', (req, res, next) => {
@@ -85,6 +81,9 @@ app.get('/signout', (req, res, next) => {
 
 });
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/build', 'index.html'));
+  });
 
 app.use(authProvider.interactionErrorHandler());
 

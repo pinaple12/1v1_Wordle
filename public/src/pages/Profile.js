@@ -1,34 +1,10 @@
-// import React from 'react';
-
-// const Profile = () => {
-
-//   const checkLogin = async () => {
-//     let indetityInfo = await fetch('routes/user/myIdentity').then(res => res.json()).then(data => JSON.stringify(data));
-//     if (indetityInfo.status === 'loggedin') {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   }
-
-//     return (
-//       <div>
-//       <h1>Profile</h1>
-//       <div className="azure-auth-interface">
-//       <a href="http://localhost:3000/signout" >Log out</a>
-//       </div>
-//     </div>
-//     )
-
-//   };
-
-//   export default Profile;
-
+import { set } from 'mongoose';
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 
-const ProfilePage = () => {
+
+const Profile = ({ user }) => {
 
   const { username } = useParams();
   const [userInfo, setUserInfo] = useState(null);
@@ -37,13 +13,16 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch(`/user/${encodeURIComponent(username)}`);
+        setUserInfo(null); // Reset user info while fetching
+        const response = await fetch(`/api/user/${encodeURIComponent(username)}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch');
+          //throw new Error('Failed to fetch');
+          console.log('User not added to database.');
+        } else {
+          const data = await response.json();
+          setUserInfo(data);
+          console.log(data);
         }
-        const data = await response.json();
-        setUserInfo(data);
-        console.log(data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -53,23 +32,70 @@ const ProfilePage = () => {
   }, [username]);
 
   if (!userInfo) {
-    return <div>Loading...</div>;
+    return <div>
+      <p>Loading...</p>
+      <br></br>
+      <p>If you are stuck on this screen, the user you are looking for is likely not yet in our database. Complete a game to activate.</p>
+    </div>;
   }
 
   const handleAddFriend = async () => {
     try {
-      const response = await fetch('/user/friend-request', {
+      const response = await fetch('/api/user/friend-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ receiverUsername: friendUsername, senderUsername: userInfo.username})
+        body: JSON.stringify({ receiverUsername: friendUsername, senderUsername: userInfo.username })
+      });
+      // if (!response.ok) {
+      //   throw new Error('Failed to add friend');
+      // }
+      const data = await response.json();
+      console.log(data);
+      alert(data.message);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  const handleAccept = async (request) => {
+    try {
+      const response = await fetch('/api/user/accept-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: userInfo.username, requesterUsername: request })
       });
       if (!response.ok) {
-        throw new Error('Failed to add friend');
+        throw new Error('Failed to accept friend');
       }
       const data = await response.json();
       console.log(data);
+      alert(data.message);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  const handleDecline = async (request) => {
+    try {
+      const response = await fetch('/api/user/reject-request', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: userInfo.username, requesterUsername: request })
+      });
+      if (!response.ok) {
+        throw new Error('Failed to decline friend');
+      }
+      const data = await response.json();
+      console.log(data);
+      alert(data.message);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -80,17 +106,17 @@ const ProfilePage = () => {
     { date: "5/12/2024", opponent: "[Username]", result: "LOST", pointsGained: 0 }
   ];
 
-  const leaderboard = [
-    { position: 1, user: "[Username]", rating: 2100 },
-    { position: 2, user: "[Username]", rating: 2100 },
-    { position: 3, user: "[Username]", rating: 2100 },
-    { position: 4, user: "[Username]", rating: 2100 }
-  ];
+
 
   return (
     <div className="profile-page">
       <div className="header">
         <h1>{username}</h1>
+        <div>
+          {userInfo.username === user.username && (
+            <button className='logout-button'><a href="http://localhost:3000/signout">Log out</a></button>
+          )}
+        </div>
       </div>
       <div className="statistics">
         <p>ELO Rating: {userInfo.elo}</p>
@@ -101,16 +127,18 @@ const ProfilePage = () => {
       <div className="row">
         <div className="labeled-column">
           <div className='label'><strong>Friends</strong></div>
-          <input 
-              type="text" 
-              placeholder="Enter Username Here" 
-              value={friendUsername}
-              onChange={e => setFriendUsername(e.target.value)} 
-            />
-            <button onClick={handleAddFriend}>Add Friend</button>
+          <input
+            type="text"
+            placeholder="Enter Username Here"
+            value={friendUsername}
+            onChange={e => setFriendUsername(e.target.value)}
+          />
+          <button onClick={handleAddFriend}>Add Friend</button>
           <div className="column friends-list">
             {userInfo.friends.map((friend, index) => (
-              <p key={index}>{friend}</p>
+              <Link to={`/profile/${encodeURIComponent(friend)}`} className="icon-container">
+                <p key={index}>{friend}</p>
+              </Link>
             ))}
           </div>
         </div>
@@ -128,24 +156,26 @@ const ProfilePage = () => {
           </div>
         </div>
         <div className="labeled-column">
-          <div className='label'><strong>Leaderboard</strong></div>                    
-          <div className="column leaderboard">
-            {leaderboard.map((entry, index) => (
-              <div key={index}>
-                <p>{entry.position}. {entry.user} (ELO Rating: {entry.rating})</p>
-              </div>
-            ))}
+          <div className='label'><strong>Friend Requests</strong></div>
+          <div className="column friend-requests">
+            <div>
+              {userInfo.username === user.username ? (
+                userInfo.requests.map((request, index) => (
+                  <div key={index}>
+                    <p>{request}</p>
+                    <button onClick={() => handleAccept(request)}>Accept</button>
+                    <button onClick={() => handleDecline(request)}>Decline</button>
+                  </div>
+                ))
+              ) : (
+                <p>Friend requests are private.</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <div>
-    {userInfo.username === session.account.username && (
-      <button className="button" onClick={() => console.log("Log Out")}>
-        Log Out
-      </button>
-    )}
-  </div>    </div>
+    </div>
   );
 };
 
-export default ProfilePage;
+export default Profile;

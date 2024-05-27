@@ -8,7 +8,7 @@ const Navbar = ({ user }) => (
       <img src={logoTitle} alt="Wordle 1v1 Logo and Title" className="logo-title"/>
     </Link>
     {user && 
-      <Link to="/profile" className='profile-container'>Profile</Link>
+      <Link to={`/profile/${encodeURIComponent(user.username)}`} className='profile-container'>Profile</Link>
     }
 
   </nav>

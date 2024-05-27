@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const fetchUserData = async () => {
         try {
-            const response = await fetch('/user/myIdentity');
+            const response = await fetch('/api/user/myIdentity');
             if (response.ok) {
                 const data = await response.json();
                 if (data.status === 'loggedin') {
@@ -44,7 +44,7 @@ function App() {
           <Route path="/create-lobby" element={<CreateLobby user={user}/>} />
           <Route path="/join-lobby" element={<JoinLobby user={user}/>} />
           <Route path="/game" element={<GamePage user={user}/>} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:username" element={<Profile user={user}/>} />
         </Routes> 
       </Router>
       <Footer/>

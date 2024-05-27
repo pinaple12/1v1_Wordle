@@ -18,11 +18,11 @@ const HomePage = ({ user }) => (
             <img src={learnIcon} alt="Learn How to Play" className="icon" />
             <p>Learn How To Play</p>
           </Link>
-          <Link to="/profile" className="icon-container">
+          <Link to={`/profile/${encodeURIComponent(user.username)}`} className="icon-container">
             <img src={historyIcon} alt="Previous Game History" className="icon" />
             <p>Previous Game History</p>
           </Link>
-          <Link to="/profile" className="icon-container">
+          <Link to={`/profile/${encodeURIComponent(user.username)}`} className="icon-container">
             <img src={statsIcon} alt="My Game Stats" className="icon" />
             <p>My Game Stats</p>
           </Link>
