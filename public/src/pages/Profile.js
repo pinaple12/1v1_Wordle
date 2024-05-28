@@ -8,12 +8,14 @@ const Profile = ({ user }) => {
 
   const { username } = useParams();
   const [userInfo, setUserInfo] = useState(null);
+  const [gameInfo, setGameInfo] = useState([]);
   const [friendUsername, setFriendUsername] = useState('');
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         setUserInfo(null); // Reset user info while fetching
+        setGameInfo([]);
         const response = await fetch(`/api/user/${encodeURIComponent(username)}`);
         if (!response.ok) {
           //throw new Error('Failed to fetch');
@@ -21,8 +23,22 @@ const Profile = ({ user }) => {
         } else {
           const data = await response.json();
           setUserInfo(data);
-          console.log(data);
+          console.log("user",data);
         }
+
+        console.log("another here again")
+        const gameResponse = await fetch(`/api/games/${encodeURIComponent(username)}`);
+        console.log("got here")
+        if (!gameResponse.ok) {
+          console.log("another here")
+          throw new Error('Failed to fetch');
+        } else {
+          const data = await gameResponse.json();
+          setGameInfo(data);
+          console.log("game", data);
+          console.log("here")
+        }
+
       } catch (error) {
         console.error('Error:', error);
       }
@@ -145,12 +161,11 @@ const Profile = ({ user }) => {
         <div className="labeled-column">
           <div className='label'><strong>Game History</strong></div>
           <div className="column game-history">
-            {gameHistory.map((game, index) => (
+            {gameInfo.map((game, index) => (
               <div key={index}>
-                <p>Date: {game.date}</p>
-                <p>Opponent: {game.opponent}</p>
-                <p>Result: {game.result}</p>
-                <p>Points Gained: {game.pointsGained}</p>
+                <p>{game.players[0]} vs. {game.players[1]}</p>
+                <p>Winner: {game.winner}</p>
+                <br></br>
               </div>
             ))}
           </div>

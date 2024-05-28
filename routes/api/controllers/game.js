@@ -8,8 +8,8 @@ const codesInUse = new Set();
 const words = ['APPLE', 'BANAN', 'CHERRY', 'DATES', 'ELDER'];
 let allSockets = {};
 
-router.get('/', async (req, res) => {
-    const username = req.query.username;
+router.get('/:username', async (req, res) => {
+    const username = req.params.username;
 
     try {
         const games = await req.models.Game.find({ players: username });
