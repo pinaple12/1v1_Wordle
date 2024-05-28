@@ -5,21 +5,21 @@ const Keyboard = ({ onKeyPress }) => {
 
   return (
     <div className="keyboard">
-      <div className="row">
+      <div className="krow">
         {keys.slice(0, 10).map((key) => (
           <button key={key} onClick={() => onKeyPress(key)} className="key">
             {key}
           </button>
         ))}
       </div>
-      <div className="row">
+      <div className="krow">
         {keys.slice(10, 19).map((key) => (
           <button key={key} onClick={() => onKeyPress(key)} className="key">
             {key}
           </button>
         ))}
       </div>
-      <div className="row">
+      <div className="krow">
         <button onClick={() => onKeyPress('ENTER')} className="key special-key">
           ENTER
         </button>

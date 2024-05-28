@@ -138,7 +138,7 @@ const Game = ({ user }) => {
           result={result}
           word={word}
           points={points}
-          onRestart={() => window.location.reload()}
+          onRestart={() => window.location.href = '/'}
         />
       )}
     </div>

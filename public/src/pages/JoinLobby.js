@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import useSocket from '../hooks/useSocket';
+import greenAvatar from '../img/green_avatar.png';
+import yellowAvatar from '../img/yellow_avatar.png';
+import { Link } from 'react-router-dom';
 
 const JoinLobby = ({ user }) => {
   const [roomCode, setRoomCode] = useState('');
@@ -29,25 +32,36 @@ const JoinLobby = ({ user }) => {
   };
 
   return (
-    <div className="join-lobby-page">
-      <h1>Join Lobby</h1>
-      <input
-        type="text"
-        value={roomCode}
-        onChange={(e) => setRoomCode(e.target.value)}
-        placeholder="Enter Room Code"
-      />
-      <button onClick={handleJoinLobby}>Join</button>
-      {joined && (
-        <div className="lobby-info">
-          <p>Room Code: {roomCode}</p>
-          <p>Host: {host.username}</p>
-          <p>Guest: {guest.username}</p>
-          <button onClick={() => socket.send(JSON.stringify({ action: 'startGame', roomCode }))}>
-            Ready Up
-          </button>
-        </div>
-      )}
+    <div className="lobby-page">
+      <div className="lobby-container">
+        <h1>Join Lobby</h1>
+        <div className="join-lobby-inputs">
+          <input 
+            type="text" 
+            className="room-code-input" 
+            placeholder="Enter Room Code"
+            value={roomCode} 
+            onChange={(e) => setRoomCode(e.target.value)} 
+          />
+          <button className="lobby-btn-join" onClick={handleJoinLobby}>Start</button>
+        </div> 
+        {joined && (
+          <div className="lobby-info">
+            <div className="users-container">
+              <div className="user">
+                <img src={greenAvatar} alt="Host Avatar" />
+                <span>{"host.username"} <span className="status-dot"></span></span>
+              </div>
+              <div className="user">
+                <img src={greenAvatar} alt="Your Avatar" />
+                <span>{"guest.username"} <span className="status-dot"></span></span>
+              </div>
+            </div>
+            <p>Once Your Friend Joins And Clicks Start, The Game Will Start Automatically.</p>
+            <Link to={`/`} className="quit">Quit Lobby</Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

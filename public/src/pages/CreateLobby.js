@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import greenAvatar from '../img/green_avatar.png';
+import yellowAvatar from '../img/yellow_avatar.png';
+import { Link } from 'react-router-dom';
 
 const CreateLobby = ({ user }) => {
   const [roomCode, setRoomCode] = useState('');
@@ -12,7 +15,7 @@ const CreateLobby = ({ user }) => {
         const data = JSON.parse(event.data);
         if (data.action === 'lobbyCreated') {
           setRoomCode(data.roomCode);
-          setWord(data.word); 
+          setWord(data.word);  
         } else if (data.action === 'guestJoined') {
           setGuest(data.guest);
         }
@@ -50,20 +53,38 @@ const CreateLobby = ({ user }) => {
       webSocket.send(JSON.stringify({ action: 'create', gameCode}));
     });
   }
-
   return (
-    <div className="create-lobby-page">
-      <h1>Create Lobby</h1>
-      <button onClick={handleCreateLobby}>Create</button>
-      {roomCode && (
+    <div className="lobby-page">
+      <div className="lobby-container">
+        <h1>Create Lobby</h1>
+        <button className="lobby-btn" onClick={handleCreateLobby}>Create</button>
+        { roomCode && (
         <div className="lobby-info">
-          <p>Room Code: {roomCode}</p>
-          <p>Host: {user.username}</p>
-          {guest ? <p>Guest: {guest.username}</p> : <p>Waiting for guest...</p>}
+          <div className="room-code"><h2>Room Code: 123123</h2></div>
+          <p>Share This Code With Your Friend To Invite Them To The Game.</p>
+          <div className="users-container">
+            <div className="user">
+              <img src={greenAvatar} alt="Host Avatar" />
+              <span>{user.username}<span className="status-dot"></span></span>
+            </div>
+            <div className="user">
+              <img src={guest ? greenAvatar : yellowAvatar} alt="Friend Avatar" />
+              <span>
+                {guest ? `${guest.username} <span className="status-dot"></span>` : 'Waiting for guest...'}
+              </span>
+            </div>
+          </div>
+          <button className="start-btn" onClick={() => window.location.href = '/game'}>
+            Start
+          </button>
+          <Link to={`/`} className='quit'>Quit Lobby</Link>
         </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
 
 export default CreateLobby;
+
+
