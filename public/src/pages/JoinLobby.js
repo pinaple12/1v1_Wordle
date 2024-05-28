@@ -50,11 +50,11 @@ const JoinLobby = ({ user }) => {
             <div className="users-container">
               <div className="user">
                 <img src={greenAvatar} alt="Host Avatar" />
-                <span>{"host.username"} <span className="status-dot"></span></span>
+                <span>{host ? host.username : 'Host Username'} <span className="status-dot"></span></span>
               </div>
               <div className="user">
                 <img src={greenAvatar} alt="Your Avatar" />
-                <span>{"guest.username"} <span className="status-dot"></span></span>
+                <span>{guest.username} <span className="status-dot"></span></span>
               </div>
             </div>
             <p>Once Your Friend Joins And Clicks Start, The Game Will Start Automatically.</p>
