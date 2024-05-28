@@ -4,9 +4,6 @@ const GameEndPopup = ({ result, word, points, onRestart }) => {
   return (
     <div className="popup-overlay">
       <div className="popup-content">
-        <button className="close-button" onRestart={onRestart}>
-          X
-        </button>
         <h2>GAME OVER</h2>
         <p className={result === 'win' ? 'result win' : 'result lose'}>
           {result === 'win' ? 'YOU WON!' : 'YOU LOST!'}
@@ -17,7 +14,7 @@ const GameEndPopup = ({ result, word, points, onRestart }) => {
         <p>
           THE POINTS YOU GOT: <span className="points">{points}</span>
         </p>
-        <button className="rematch-button" onClick={onRestart}>Rematch</button>
+        <button className="rematch-button" onClick={onRestart}>Home</button>
       </div>
     </div>
   );
