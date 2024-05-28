@@ -24,7 +24,7 @@ const CreateLobby = ({ user }) => {
   }, [socket]); */
 
   const handleCreateLobby = async () => {
-    const lobbyResponse = await fetch('/games/createLobby', {
+    const lobbyResponse = await fetch('/api/games/createLobby', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
