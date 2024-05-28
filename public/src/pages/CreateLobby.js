@@ -60,7 +60,7 @@ const CreateLobby = ({ user }) => {
         <button className="lobby-btn" onClick={handleCreateLobby}>Create</button>
         { roomCode && (
         <div className="lobby-info">
-          <div className="room-code"><h2>Room Code: 123123</h2></div>
+          <div className="room-code"><h2>Room Code: {roomCode}</h2></div>
           <p>Share This Code With Your Friend To Invite Them To The Game.</p>
           <div className="users-container">
             <div className="user">
