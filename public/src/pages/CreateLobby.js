@@ -7,6 +7,7 @@ const CreateLobby = ({ user }) => {
   const [roomCode, setRoomCode] = useState('');
   const [word, setWord] = useState('');
   const [guest, setGuest] = useState(null);
+  const [ws, setWs] = useState(undefined);
 
   /** 
   useEffect(() => {
@@ -29,7 +30,7 @@ const CreateLobby = ({ user }) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ playerName: 'staticUser' })
+      body: JSON.stringify({ playerName: user.username })
     })
 
     if (lobbyResponse.status !== 200) {
@@ -52,7 +53,38 @@ const CreateLobby = ({ user }) => {
     webSocket.addEventListener('open', (_event) => {
       webSocket.send(JSON.stringify({ action: 'create', gameCode}));
     });
+
+    webSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.action === 'guestJoined') {
+        setGuest(data.guest);
+        console.log(data.guest);
+      }
+      if (data.action === 'quit') {
+        setGuest(null);
+      }
+    }
+
+    setWs(webSocket);
   }
+
+  const handleQuit = () => {
+    if (ws && roomCode) {
+      ws.send(JSON.stringify({ action: 'quit', gameCode : roomCode, username: user.username}));
+    }
+  }
+
+  const handleStart = () => {
+    if (!guest) {
+      alert('Still waiting for guest!');
+      return;
+    }
+    if (ws && roomCode) {
+      ws.send(JSON.stringify({ action: 'start', gameCode : roomCode}));
+      window.location.replace(`/game?gameCode=${roomCode}`);
+    }
+  }
+
   return (
     <div className="lobby-page">
       <div className="lobby-container">
@@ -70,14 +102,14 @@ const CreateLobby = ({ user }) => {
             <div className="user">
               <img src={guest ? greenAvatar : yellowAvatar} alt="Friend Avatar" />
               <span>
-                {guest ? `${guest.username} <span className="status-dot"></span>` : 'Waiting for guest...'}
+                {guest ? `${guest}` : 'Waiting for guest...'}
               </span>
             </div>
           </div>
-          <button className="start-btn" onClick={() => window.location.href = '/game'}>
+          <button className="start-btn" onClick={handleStart}>
             Start
           </button>
-          <Link to={`/`} className='quit'>Quit Lobby</Link>
+          <Link to={`/`} onClick={handleQuit} className='quit'>Quit Lobby</Link>
         </div>
         )}
       </div>

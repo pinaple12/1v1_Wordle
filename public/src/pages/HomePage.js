@@ -13,6 +13,16 @@ const HomePage = ({ user }) => (
       <div className="main-content">
         <h1>Welcome to Wordle 1v1</h1>
         <p>Welcome to Wordle 1v1, the competitive word game where you can challenge your friends and test your word-guessing skills. Ready to start a game? Choose an option below!</p>
+        <div className="buttons-row">
+          <Link to="/create-lobby" className="button-container">
+            <img src={createLobbyIcon} alt="Create Lobby"/>
+            <p>CREATE LOBBY</p>
+          </Link>
+          <Link to="/join-lobby" className="button-container">
+            <img src={joinLobbyIcon} alt="Join Lobby"/>
+            <p>JOIN LOBBY</p>
+          </Link>
+        </div>
         <div className="top-row">
           <Link to="/learn" className="icon-container">
             <img src={learnIcon} alt="Learn How to Play" className="icon" />
@@ -27,18 +37,7 @@ const HomePage = ({ user }) => (
             <p>My Game Stats</p>
           </Link>
         </div>
-  
-        <div className="buttons-row">
-          <Link to="/create-lobby" className="button-container">
-            <img src={createLobbyIcon} alt="Create Lobby"/>
-            <p>CREATE LOBBY</p>
-          </Link>
-          <Link to="/join-lobby" className="button-container">
-            <img src={joinLobbyIcon} alt="Join Lobby"/>
-            <p>JOIN LOBBY</p>
-          </Link>
-        </div>
-        <Link to="/game">
+        <Link to="/game?gamse=adf">
            game(for testing)
         </Link>
       </div>

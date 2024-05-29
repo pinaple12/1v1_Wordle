@@ -68,6 +68,8 @@ body {
   border-radius: 10px;
   text-decoration: none;
   color: black;
+  width:200px;
+  height:150px;
 }
 
 .button-container img {

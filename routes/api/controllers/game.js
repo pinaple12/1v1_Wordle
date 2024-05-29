@@ -54,9 +54,53 @@ router.post('/createLobby', async (req, res) => {
 
     const game = { creator, word };
     games[gameCode] = game;
+    games[gameCode].host = creator;
 
     res.status(200).send({ status: 'success', gameCode, word });
 });
+
+router.post('/finishedGame', async (req, res) => {
+    console.log(req.body)
+    const player = req.body.playerName;
+    const gameCode = req.body.gameCode;
+    const score = req.body.score;
+
+    if (score === 0) {
+        //first to run out of guesses loses if both players run out
+        if (!games[gameCode].loser) {
+            games[gameCode].loser = player;
+            res.status(200).send({status : 'success', result : 'win'});
+        } else {
+            games[gameCode].winner = player;
+            res.status(200).send({status : 'success', result : 'lose'});
+        }
+    }
+
+    //set winner and loser if both players finish
+    if (!games[gameCode].winner) {
+        res.status(200).send({status : 'success', result : 'win'});
+    } else if (!games[gameCode].loser) {
+        games[gameCode].loser = player;
+        res.status(200).send({status : 'success', result : 'lose'});
+    }
+
+    //save new game
+    if (games[gameCode].winner && games[gameCode].loser) {
+        const newGame = new req.models.Game({
+            gameID: 1, 
+            players: [games[gameCode].winner, games[gameCode].loser],
+            winner: games[gameCode].winner,
+            score: score
+        });
+    
+        await newGame.save();
+
+        games[gameCode] = undefined;
+        codesInUse.delete(gameCode);
+        allSockets[gameCode] = undefined;
+    }
+    
+})
 
 export const mountWs = (app) => {
     app.ws('/gameSockets', (ws, res) => {
@@ -70,21 +114,50 @@ export const mountWs = (app) => {
             if (socketMessage.action === 'create') {
                 console.log("game code" , gameCode);
                 allSockets[gameCode] = [ws];
-                console.log("all sockets",allSockets);
             }
 
             //on join, add socket to existing gamecode
             if (socketMessage.action === 'join') {
+                if (games[gameCode] == undefined) {
+                    ws.send(JSON.stringify({'action' : 'failed'}));
+                    return;
+                }
+
                 games[gameCode].guest = socketMessage.username;
+                console.log(socketMessage.username);
+                console.log(games[gameCode].host)
+                allSockets[gameCode].push(ws);
 
                 allSockets[gameCode].forEach(socket => {
-                    socket.send({ 'status': 'joined' })
+                    socket.send(JSON.stringify({ 'action': 'guestJoined', 'host': games[gameCode].host, 'guest' : socketMessage.username}));
                 });
-                //allSockets[gameCode].push(ws);
+            }
+
+            if (socketMessage.action === 'quit') {
+                if (socketMessage.quitter === 'host') {
+                    games[gameCode] = undefined;
+                    codesInUse.delete(gameCode);
+                } else if (socketMessage.quitter === 'guest') {
+                    games[gameCode].guest = undefined;
+                    allSockets[gameCode] = allSockets[gameCode].filter(socket => socket !== ws);
+                }
+                allSockets[gameCode] = allSockets[gameCode].filter(socket => socket !== ws);
+
+                allSockets[gameCode].forEach(socket => {
+                    socket.send(JSON.stringify({ 'action': 'quit'}));
+                });
+
+                if (socketMessage.quitter === 'host') {
+                    allSockets[gameCode] = undefined;
+                }
+            }
+
+            if (socketMessage.action === 'start') {
+                allSockets[gameCode].forEach(socket => {
+                    socket.send(JSON.stringify({'action' : 'start'}));
+                })
             }
         });
-
-        console.log("all sockets",allSockets);
 
     })
 }

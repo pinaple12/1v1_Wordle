@@ -9,7 +9,6 @@ const Game = ({ user }) => {
   const [currentGuess, setCurrentGuess] = useState('');
   const [feedback, setFeedback] = useState([]);
   const [gameOver, setGameOver] = useState(false);
-  const [gameCode, setGameCode] = useState('');
   const [result, setResult] = useState('');
   const [points, setPoints] = useState(0);
   const [word, setWord] = useState('GREEN');
@@ -35,8 +34,6 @@ const Game = ({ user }) => {
 
       socket.send(JSON.stringify({ action: 'getGameData', username: user.username }));
     }
-
-    console.log('done');
   }, [socket, user.username]);
 
   useEffect(() => {
@@ -58,13 +55,6 @@ const Game = ({ user }) => {
     };
   }, [currentGuess, gameOver]);
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('gameCode')) {
-      setGameCode(urlParams.get('gameCode'))
-    };
-  }, [])
-
   const handleKeyPress = (key) => {
     if (gameOver) return;
 
@@ -72,45 +62,15 @@ const Game = ({ user }) => {
       if (currentGuess.length === 5) {
         const newFeedback = checkGuess(currentGuess);
         setFeedback((prevFeedback) => [...prevFeedback, newFeedback]);
-        //this will have to be async...
-        setGuesses( (prevGuesses) => {
+        setGuesses((prevGuesses) => {
           const updatedGuesses = [...prevGuesses, currentGuess];
           if (newFeedback.every((letter) => letter === 'green')) {
-
             const gainedPoints = calculatePoints(updatedGuesses.length);
             setPoints(gainedPoints);
-            //Handles sending results to server
-            // const gameResultResp = await fetch('/', {
-            //   method: 'POST',
-            //   headers: {'Content-Type': 'application/json'},
-            //   body: JSON.stringify({
-            //     playerName: user.username,
-            //     gameCode,
-            //     score : gainedPoints
-            //   })
-            // });
-
-            // const gameResult = await gameResultResp.json();
-            // setResult(gameResult.result);
-
             setGameOver(true);
             setResult('win');
             socket.send(JSON.stringify({ action: 'gameOver', result: 'win', points: gainedPoints }));
           } else if (updatedGuesses.length === 6) { 
-            
-            //Handles sending results to server
-            // const gameResultResp = await fetch('/', {
-            //   method: 'POST',
-            //   headers: {'Content-Type': 'application/json'},
-            //   body: JSON.stringify({
-            //     playerName: user.username,
-            //     gameCode,
-            //     score : 0
-            //   })
-            // });
-
-            // const gameResult = await gameResultResp.json();
-            // setResult(gameResult.result);
             setGameOver(true);
             setResult('lose');
             socket.send(JSON.stringify({ action: 'gameOver', result: 'lose', points: 0 }));
