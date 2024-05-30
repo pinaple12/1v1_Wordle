@@ -1,5 +1,5 @@
 import express from 'express';
-
+import {promises as fs}from 'fs';
 var router = express.Router();
 
 //Global Variables
@@ -20,6 +20,15 @@ router.get('/:username', async (req, res) => {
         res.status(500).json({ "status": "error", "error": error.message });
     }
 })
+
+//generates a random word
+router.get('/wordGenerator', async (req, res) => {
+    console.log('received');
+    const data = await fs.readFile('public/public/wordbase.txt', 'utf8');
+    const lines = data.split('\n');
+    const word = lines[Math.floor(Math.random()*lines.length)];
+    res.json({status : 'success', word});
+});
 
 router.post('/', async (req, res) => {
     const players = req.body.players;
@@ -59,6 +68,7 @@ router.post('/createLobby', async (req, res) => {
     res.status(200).send({ status: 'success', gameCode, word });
 });
 
+
 router.post('/finishedGame', async (req, res) => {
     console.log(req.body)
     const player = req.body.playerName;
@@ -69,20 +79,21 @@ router.post('/finishedGame', async (req, res) => {
         //first to run out of guesses loses if both players run out
         if (!games[gameCode].loser) {
             games[gameCode].loser = player;
-            res.status(200).send({status : 'success', result : 'win'});
+            res.status(200).send({status : 'success', result : 'lose'});
         } else {
             games[gameCode].winner = player;
-            res.status(200).send({status : 'success', result : 'lose'});
+            res.status(200).send({status : 'success', result : 'win'});
+        }
+    } else {
+        if (!games[gameCode].winner) {
+            games[gameCode].winner = player;
+            res.status(200).send({status : 'success', result : 'win'});
+        } else if (!games[gameCode].loser) {
+            games[gameCode].loser = player;
+            res.status(200).send({ status: 'success', result: 'lose' });
         }
     }
-
-    //set winner and loser if both players finish
-    if (!games[gameCode].winner) {
-        res.status(200).send({status : 'success', result : 'win'});
-    } else if (!games[gameCode].loser) {
-        games[gameCode].loser = player;
-        res.status(200).send({status : 'success', result : 'lose'});
-    }
+    console.log(games[gameCode]);
 
     //save new game
     if (games[gameCode].winner && games[gameCode].loser) {

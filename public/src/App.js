@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchUserData = async () => {
         try {
@@ -28,6 +29,8 @@ function App() {
         } catch (error) {
             console.error('Error fetching user data:', error);
             setUser(null);
+        } finally {
+            setLoading(false);
         }
     };
 

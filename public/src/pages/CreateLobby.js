@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import greenAvatar from '../img/green_avatar.png';
 import yellowAvatar from '../img/yellow_avatar.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const CreateLobby = ({ user }) => {
   const [roomCode, setRoomCode] = useState('');
   const [word, setWord] = useState('');
   const [guest, setGuest] = useState(null);
   const [ws, setWs] = useState(undefined);
+  const navigator = useNavigate();
 
   /** 
   useEffect(() => {
@@ -81,7 +83,7 @@ const CreateLobby = ({ user }) => {
     }
     if (ws && roomCode) {
       ws.send(JSON.stringify({ action: 'start', gameCode : roomCode}));
-      window.location.replace(`/game?gameCode=${roomCode}`);
+      navigator(`/game?gameCode=${roomCode}`);
     }
   }
 
@@ -109,6 +111,9 @@ const CreateLobby = ({ user }) => {
           <button className="start-btn" onClick={handleStart}>
             Start
           </button>
+          <Link to={`/game?roomCode=${roomCode}`}>
+           game(for testing)
+        </Link>
           <Link to={`/`} onClick={handleQuit} className='quit'>Quit Lobby</Link>
         </div>
         )}
