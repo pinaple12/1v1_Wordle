@@ -11,21 +11,6 @@ const CreateLobby = ({ user }) => {
   const [ws, setWs] = useState(undefined);
   const navigator = useNavigate();
 
-  /** 
-  useEffect(() => {
-    if (socket) {
-      socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data.action === 'lobbyCreated') {
-          setRoomCode(data.roomCode);
-          setWord(data.word);  
-        } else if (data.action === 'guestJoined') {
-          setGuest(data.guest);
-        }
-      };
-    }
-  }, [socket]); */
-
   const handleCreateLobby = async () => {
     const lobbyResponse = await fetch('/api/games/createLobby', {
       method: "POST",

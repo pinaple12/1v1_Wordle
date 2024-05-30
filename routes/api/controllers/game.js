@@ -33,12 +33,10 @@ router.get('/wordGenerator', async (req, res) => {
 router.post('/', async (req, res) => {
     const players = req.body.players;
     const winner = req.body.winner;
-    const score = req.body.score;
 
     const newGame = new req.models.Game({
         players: players,
         winner: winner,
-        score: score
     });
     await newGame.save();
 })
@@ -98,10 +96,9 @@ router.post('/finishedGame', async (req, res) => {
     //save new game
     if (games[gameCode].winner && games[gameCode].loser) {
         const newGame = new req.models.Game({
-            gameID: 1, 
+            gameID: gameCode, 
             players: [games[gameCode].winner, games[gameCode].loser],
             winner: games[gameCode].winner,
-            score: score
         });
     
         await newGame.save();

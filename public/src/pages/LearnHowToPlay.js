@@ -23,37 +23,10 @@ const LearnHowToPlay = () => (
             <li>The first player to guess the word correctly wins.</li>
             <li>If both players fail to guess the word within six attempts, the game ends in a draw.</li>
         </ol>
-        <h3>Scoring:</h3>
-        <p>Points are awarded based on the number of attempts taken to guess the word. The fewer attempts, the higher the score:
-            <ul>
-            <li><strong>4 Guesses Left:</strong> 500 points</li>
-            <li><strong>3 Guesses Left:</strong> 300 points</li>
-            <li><strong>2 Guesses Left:</strong> 200 points</li>
-            <li><strong>1 Guess Left:</strong> 100 points</li>
-            <li><strong>0 Guesses Left:</strong> 0 points (Game Lost)</li>
-            </ul>
-        </p>
         <h3>ELO Rating:</h3>
-        <p>Your performance affects your ELO rating, which measures your skill level. Winning against higher-rated players will increase your ELO rating more significantly.</p>
-        <p><strong>Initial ELO Rating:</strong> Every player starts with an initial ELO rating of 0.</p>
-        <p><strong>ELO Adjustment:</strong> The player's ELO rating is directly adjusted based on the points earned in each game.
-            <ul>
-            <li>Example Calculation:
-                <ul>
-                <li>Game 1: Player guesses the word with 3 guesses left. Points earned: 300.
-                    <ul>
-                    <li>New ELO Rating = 0 (initial) + 300 = 300</li>
-                    </ul>
-                </li>
-                <li>Game 2: Player guesses the word with 2 guesses left. Points earned: 200.
-                    <ul>
-                    <li>New ELO Rating = 300 + 200 = 500</li>
-                    </ul>
-                </li>
-                </ul>
-            </li>
-            </ul>
-        </p>
+        <p>Your performance affects your ELO rating, which measures your skill level.</p>
+        <p><strong>Initial ELO Rating:</strong> Every player starts with an initial ELO rating of 1000.</p>
+        <p><strong>ELO Adjustment:</strong> The player's ELO rating is directly adjusted based on the points earned in each game. A win will result in an increase of 10 and a loss will decrease your ELO by 10.</p>
         <h2>Tips and Strategies:</h2>
         <h3>Start with Common Words:</h3>
         <p>Use common 5-letter words for your initial guesses to cover more possibilities.</p>

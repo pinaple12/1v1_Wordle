@@ -8,7 +8,6 @@ const JoinLobby = ({ user }) => {
   const [roomCode, setRoomCode] = useState('');
   const [joined, setJoined] = useState(false);
   const [host, setHost] = useState(null);
-  const [guest, setGuest] = useState(user);
   const socket = useSocket('ws://localhost:3000/gameSockets');
 
   useEffect(() => {
@@ -16,7 +15,6 @@ const JoinLobby = ({ user }) => {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.action === 'guestJoined') {
-          console.log('sup')
           setJoined(true);
           setHost(data.host);
           console.log(data.host);

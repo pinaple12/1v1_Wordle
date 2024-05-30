@@ -11,33 +11,7 @@ const Game = ({ user }) => {
   const [gameOver, setGameOver] = useState(false);
   const [gameCode, setGameCode] = useState('');
   const [result, setResult] = useState('');
-  const [points, setPoints] = useState(0);
   const [word, setWord] = useState('GREEN');
-  const [opponent, setOpponent] = useState(null);
-  const [opponentGuesses, setOpponentGuesses] = useState([]);
-  //const socket = useSocket('ws://localhost:5000/gameSocket');
-
-  // useEffect(() => {
-  //   if (socket) {
-  //     socket.onmessage = (event) => {
-  //       const data = JSON.parse(event.data);
-  //       if (data.action === 'gameData') {
-  //         setWord(data.word);
-  //         setOpponent(data.opponent);
-  //       } else if (data.action === 'gameOver') {
-  //         setGameOver(true);
-  //         setResult(data.result);
-  //         setPoints(data.points);
-  //       } else if (data.action === 'opponentMadeGuess') {
-  //         setOpponentGuesses((prevGuesses) => [...prevGuesses, data.guess]);
-  //       }
-  //     };
-
-  //     socket.send(JSON.stringify({ action: 'getGameData', username: user.username }));
-  //   }
-
-  //   console.log('done');
-  // }, [socket, user.username]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -87,7 +61,6 @@ const Game = ({ user }) => {
           if (newFeedback.every((letter) => letter === 'green')) {
 
             const gainedPoints = calculatePoints(updatedGuesses.length);
-            setPoints(gainedPoints);
             //Handles sending results to server
             fetch('/api/games/finishedGame', {
               method: 'POST',
@@ -101,19 +74,19 @@ const Game = ({ user }) => {
               console.log(gameResult);
               setResult(gameResult.result);
               setGameOver(true);
-            });
 
-            fetch('/api/user', {
-              method: 'POST',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({
-                game: {
-                  winner: result === 'win' ? user.username : '',
-                  gameID: gameCode
-                }
+
+              fetch('/api/user', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  game: {
+                    winner: gameResult.result === 'win' ? user.username : '',
+                    gameID: gameCode
+                  }
+                })
               })
-            })
-
+            });
           } else if (updatedGuesses.length === 6) { 
             
             //Handles sending results to server
@@ -129,6 +102,17 @@ const Game = ({ user }) => {
               console.log(gameResult);
               setResult(gameResult.result);
               setGameOver(true);
+
+              fetch('/api/user', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  game: {
+                    winner: gameResult.result === 'win' ? user.username : '',
+                    gameID: gameCode
+                  }
+                })
+              })
             });
           } 
           return updatedGuesses;
@@ -191,7 +175,6 @@ const Game = ({ user }) => {
         <GameEndPopup
           result={result}
           word={word}
-          points={points}
           onRestart={() => window.location.href = '/'}
         />
       )}

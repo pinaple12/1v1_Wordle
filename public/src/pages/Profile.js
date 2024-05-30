@@ -1,4 +1,3 @@
-import { set } from 'mongoose';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
@@ -18,27 +17,19 @@ const Profile = ({ user }) => {
         setGameInfo([]);
         const response = await fetch(`/api/user/${encodeURIComponent(username)}`);
         if (!response.ok) {
-          //throw new Error('Failed to fetch');
           console.log('User not added to database.');
         } else {
           const data = await response.json();
           setUserInfo(data);
-          console.log("user",data);
         }
 
-        console.log("another here again")
         const gameResponse = await fetch(`/api/games/${encodeURIComponent(username)}`);
-        console.log("got here")
         if (!gameResponse.ok) {
-          console.log("another here")
           throw new Error('Failed to fetch');
         } else {
           const data = await gameResponse.json();
           setGameInfo(data);
-          console.log("game", data);
-          console.log("here")
         }
-
       } catch (error) {
         console.error('Error:', error);
       }
@@ -64,9 +55,9 @@ const Profile = ({ user }) => {
         },
         body: JSON.stringify({ receiverUsername: friendUsername, senderUsername: userInfo.username })
       });
-      // if (!response.ok) {
-      //   throw new Error('Failed to add friend');
-      // }
+      if (!response.ok) {
+        throw new Error('Failed to add friend');
+      }
       const data = await response.json();
       console.log(data);
       alert(data.message);
@@ -88,7 +79,6 @@ const Profile = ({ user }) => {
         throw new Error('Failed to accept friend');
       }
       const data = await response.json();
-      console.log(data);
       alert(data.message);
       window.location.reload();
     } catch (error) {
@@ -109,19 +99,12 @@ const Profile = ({ user }) => {
         throw new Error('Failed to decline friend');
       }
       const data = await response.json();
-      console.log(data);
       alert(data.message);
       window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
   }
-
-  const gameHistory = [
-    { date: "5/17/2024", opponent: "[Username]", result: "WON", pointsGained: 200 },
-    { date: "5/12/2024", opponent: "[Username]", result: "LOST", pointsGained: 0 }
-  ];
-
 
 
   return (
