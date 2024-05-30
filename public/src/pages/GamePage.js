@@ -10,7 +10,7 @@ const Game = ({ user }) => {
   const [gameCode, setGameCode] = useState('');
   const [result, setResult] = useState('');
   const [word, setWord] = useState('GREEN');
-
+ 
   useEffect(() => {
     const handleKeyDown = (event) => {
       const key = event.key.toUpperCase();
