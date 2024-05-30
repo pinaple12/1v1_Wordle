@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Keyboard from '../components/Keyboard';
-import OpponentProgress from '../components/OpponentProgress';
 import GameEndPopup from '../components/GameEndPopup';
-import useSocket from '../hooks/useSocket';
 
 const Game = ({ user }) => {
   const [guesses, setGuesses] = useState([]);

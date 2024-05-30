@@ -96,9 +96,9 @@ const CreateLobby = ({ user }) => {
           <button className="start-btn" onClick={handleStart}>
             Start
           </button>
-          <Link to={`/game?roomCode=${roomCode}`}>
+          {/* <Link to={`/game?roomCode=${roomCode}`}>
            game(for testing)
-        </Link>
+        </Link> */}
           <Link to={`/`} onClick={handleQuit} className='quit'>Quit Lobby</Link>
         </div>
         )}

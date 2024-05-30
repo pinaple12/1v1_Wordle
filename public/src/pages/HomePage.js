@@ -37,9 +37,9 @@ const HomePage = ({ user }) => (
             <p>My Game Stats</p>
           </Link>
         </div>
-        <Link to="/game?gamse=adf">
+        {/* <Link to="/game?gamse=adf">
            game(for testing)
-        </Link>
+        </Link> */}
       </div>
     ) : (
           <div className="login-page">
