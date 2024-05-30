@@ -102,6 +102,18 @@ const Game = ({ user }) => {
               setResult(gameResult.result);
               setGameOver(true);
             });
+
+            fetch('/api/user', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                game: {
+                  winner: result === 'win' ? user.username : '',
+                  gameID: gameCode
+                }
+              })
+            })
+
           } else if (updatedGuesses.length === 6) { 
             
             //Handles sending results to server

@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     //userID: Number,
     username: String,
     elo: Number,
-    gamesPlayed: [Number], // might not need to be an array because we get games where the username is present instead
+    gamesPlayed: [String], // might not need to be an array because we get games where the username is present instead
     gamesWon: Number,
     gamesLost: Number,
     friends: [String], // changed from id to username
