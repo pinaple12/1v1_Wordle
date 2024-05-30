@@ -20,5 +20,6 @@
   "description": "Group 2: Ishita Saxena, Erica Zhang, Justin Dong, Kai Tinder",
   "main": "app.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {}
 }
