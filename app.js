@@ -12,10 +12,9 @@ const authConfig = {
      clientId: "5c0eea2a-41fe-49e9-9980-11040673bf84",
         authority: "https://login.microsoftonline.com/f6b6dd5b-f02f-441a-99a0-162ac5060bd2",
         clientSecret: "RM98Q~Cl8pAF9ZoSlRVIKB4ZUwNkus0l4xuk~aVd",
-        redirectUri: "/redirect"
+        redirectUri: "/redirect" //https://final-project-wordle-1v1.azurewebsites.net
  },
-
-
+ 
 	system: {
     	loggerOptions: {
         	loggerCallback(loglevel, message, containsPii) {
@@ -70,13 +69,13 @@ mountWs(app);
 
 app.get('/signin', (req, res, next) => {
     return req.authContext.login({
-        postLoginRedirectUri: "http://localhost:3000/", // redirect here after login
+        postLoginRedirectUri: "/", // redirect here after login
     })(req, res, next);
 
 });
 app.get('/signout', (req, res, next) => {
     return req.authContext.logout({
-        postLogoutRedirectUri: "http://localhost:3000/", // redirect here after logout
+        postLogoutRedirectUri: "/", // redirect here after logout
     })(req, res, next);
 
 });

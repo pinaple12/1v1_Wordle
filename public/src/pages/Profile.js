@@ -113,7 +113,7 @@ const Profile = ({ user }) => {
         <h1>{username}</h1>
         <div>
           {userInfo.username === user.username && (
-            <button className='logout-button'><a href="http://localhost:3000/signout">Log out</a></button>
+            <button className='logout-button'><a href="/signout">Log out</a></button>
           )}
         </div>
       </div>
