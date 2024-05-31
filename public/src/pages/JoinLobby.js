@@ -8,7 +8,7 @@ const JoinLobby = ({ user }) => {
   const [roomCode, setRoomCode] = useState('');
   const [joined, setJoined] = useState(false);
   const [host, setHost] = useState(null);
-  const socket = useSocket('ws://localhost:3000/gameSockets');
+  const socket = useSocket('wss://final-project-wordle1v1.azurewebsites.net/gameSockets');
 
   useEffect(() => {
     if (socket) {
