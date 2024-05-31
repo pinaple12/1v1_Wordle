@@ -35,6 +35,7 @@ const CreateLobby = ({ user }) => {
     console.log('got here');
 
     const webSocket = new WebSocket("wss://final-project-wordle1v1.azurewebsites.net/gameSockets");
+    // const webSocket = new WebSocket("ws://localhost:3000/gameSockets");
     console.log('webSocket', webSocket);
 
     webSocket.addEventListener('open', (_event) => {

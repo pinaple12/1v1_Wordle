@@ -14,8 +14,7 @@ const authConfig = {
         clientSecret: "RM98Q~Cl8pAF9ZoSlRVIKB4ZUwNkus0l4xuk~aVd",
         redirectUri: "https://final-project-wordle1v1.azurewebsites.net/redirect"
  },
-
-
+ 
 	system: {
     	loggerOptions: {
         	loggerCallback(loglevel, message, containsPii) {

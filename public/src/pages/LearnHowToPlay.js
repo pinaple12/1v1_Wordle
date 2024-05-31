@@ -9,7 +9,7 @@ const LearnHowToPlay = () => (
         <p>The goal is to guess the hidden 5-letter word before your opponent within six attempts.</p>
         <h3>Gameplay:</h3>
         <ol>
-            <li>Each player takes turns to guess a word.</li>
+            <li>Each player will guess a different word.</li>
             <li>After each guess, the letters are highlighted in different colors to provide clues:
             <ul>
                 <li><strong>GREEN:</strong> The letter is in the word and in the correct position.</li>
