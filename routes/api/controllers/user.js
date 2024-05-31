@@ -4,7 +4,7 @@ var router = express.Router();
 
 const games = {};
 
-router.get('/myIdentity', (req, res) => { // TODO: need to handle on the frontend
+router.get('/myIdentity', (req, res) => {
     if (req.session.isAuthenticated) {
         res.json(
             {
@@ -54,7 +54,6 @@ router.post('/', async (req, res) => {
             await info.save();
         } else {
             const newUser = new req.models.User({
-                userID: Math.random(), // TODO: we should discuss this
                 username: username,
                 elo: 1000,
                 gamesPlayed: [game.gameID], // Initialize with the current game
