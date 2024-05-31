@@ -1,5 +1,7 @@
 # INFO 441 Final Project
 Group 2: Ishita Saxena, Erica Zhang, Justin Dong, Kai Tinder
+NOTE: We attempted to deploy using Azure, but it would not work. Everything works locally.
+In order to test, open up two windows, sign in, and you can play against yourself.
 
 ## Project Description
 ### Who is our target audience?
