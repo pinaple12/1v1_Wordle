@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Keyboard from '../components/Keyboard';
 import GameEndPopup from '../components/GameEndPopup';
+import words from '../data/words';
 
 const Game = ({ user }) => {
   const [guesses, setGuesses] = useState([]);
@@ -9,7 +10,7 @@ const Game = ({ user }) => {
   const [gameOver, setGameOver] = useState(false);
   const [gameCode, setGameCode] = useState('');
   const [result, setResult] = useState('');
-  const [word, setWord] = useState('GREEN');
+  const [word, setWord] = useState('');
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -35,14 +36,14 @@ const Game = ({ user }) => {
     if (urlParams.has('gameCode')) {
       setGameCode(urlParams.get('gameCode'))
     };
-    
-    //HELP HERE... CANNOT FIND THIS ROUTE
-    // fetch('/api/games/wordGenerator')
-    //   .then(resp => resp.json())
-    //   .then(data => {
-    //     setWord(data.word);
-    //   });
+
+    setWord(getRandomWord());
   }, [])
+
+  const getRandomWord = () => {
+    const randomIndex = Math.floor(Math.random() * words.length);
+    return words[randomIndex].toUpperCase();
+  }
 
   const handleKeyPress = (key) => {
     if (gameOver) return;
@@ -52,7 +53,6 @@ const Game = ({ user }) => {
         const newFeedback = checkGuess(currentGuess);
         setFeedback((prevFeedback) => [...prevFeedback, newFeedback]);
 
-        //this will have to be async...
         setGuesses( (prevGuesses) => {
           const updatedGuesses = [...prevGuesses, currentGuess];
 

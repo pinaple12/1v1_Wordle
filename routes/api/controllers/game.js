@@ -22,13 +22,13 @@ router.get('/:username', async (req, res) => {
 })
 
 //generates a random word
-router.get('/wordGenerator', async (req, res) => {
-    console.log('received');
-    const data = await fs.readFile('public/public/wordbase.txt', 'utf8');
-    const lines = data.split('\n');
-    const word = lines[Math.floor(Math.random()*lines.length)];
-    res.json({status : 'success', word});
-});
+// router.get('/wordGenerator', async (req, res) => {
+//     console.log('received');
+//     const data = await fs.readFile('public/public/wordbase.txt', 'utf8');
+//     const lines = data.split('\n');
+//     const word = lines[Math.floor(Math.random()*lines.length)];
+//     res.json({status : 'success', word: word});
+// });
 
 router.post('/', async (req, res) => {
     const players = req.body.players;
